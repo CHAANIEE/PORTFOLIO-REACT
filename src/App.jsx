@@ -1,40 +1,29 @@
-import { useState } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion'
-import Preloader from './components/Preloader.jsx'
-import Menu from './components/Menu.jsx'
-import Footer from './components/Footer.jsx'
-import Home from './pages/Home.jsx'
-import Work from './pages/Work.jsx'
-import WorkDetail from './pages/WorkDetail.jsx'
-import About from './pages/About.jsx'
-import Contact from './pages/Contact.jsx'
+import Footer from "./components/layout/Footer";
+import Navbar from "./components/layout/Navbar";
+import Hero from "./components/sections/Hero";
+import Stats from "./components/sections/Stats";
+import Benefits from "./components/sections/Benefits";
+import Skills from "./components/sections/Skills";
+import Projects from "./components/sections/Projects";
+import Process from "./components/sections/Process";
+import FAQ from "./components/sections/FAQ";
+import ProjectRequestForm from "./components/sections/ProjectRequestForm";
 
-export default function App() {
-  const [loading, setLoading] = useState(true)
-  const location = useLocation()
-
+function App() {
   return (
     <>
-      {loading && <Preloader onDone={() => setLoading(false)} />}
-
-      {!loading && (
-        <>
-          <Menu />
-          <main>
-            <AnimatePresence mode="wait">
-              <Routes location={location} key={location.pathname}>
-                <Route path="/" element={<Home />} />
-                <Route path="/work" element={<Work />} />
-                <Route path="/work/:slug" element={<WorkDetail />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
-              </Routes>
-            </AnimatePresence>
-          </main>
-          <Footer />
-        </>
-      )}
+      <Navbar />
+      <Hero />
+      <Stats />
+      <Benefits />
+      <Skills />
+      <Projects />
+      <Process />
+      <FAQ />
+      <ProjectRequestForm />
+      <Footer />
     </>
-  )
+  );
 }
+
+export default App;
