@@ -217,7 +217,7 @@ h1, h2, h3 {
   }
 }
 
-/* === Benefits (horizontal scroll) === */
+/* === Benefits === */
 .benefits h2 {
   font-size: 2.4rem;
   margin-bottom: 48px;
@@ -226,35 +226,12 @@ h1, h2, h3 {
 }
 
 .benefits-grid {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  padding: 8px 4px 24px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(168, 85, 247, 0.4) transparent;
-}
-
-.benefits-grid::-webkit-scrollbar {
-  height: 6px;
-}
-
-.benefits-grid::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 999px;
-}
-
-.benefits-grid::-webkit-scrollbar-thumb {
-  background: rgba(168, 85, 247, 0.5);
-  border-radius: 999px;
 }
 
 .benefit-card {
-  flex: 0 0 auto;
-  width: 280px;
-  scroll-snap-align: start;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
@@ -320,7 +297,7 @@ h1, h2, h3 {
   color: #e0e0e5;
 }
 
-/* === Projects (horizontal scroll) === */
+/* === Projects === */
 .projects h2 {
   font-size: 2.4rem;
   margin-bottom: 40px;
@@ -334,35 +311,12 @@ h1, h2, h3 {
 }
 
 .project-grid {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  padding: 8px 4px 24px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(168, 85, 247, 0.4) transparent;
-}
-
-.project-grid::-webkit-scrollbar {
-  height: 6px;
-}
-
-.project-grid::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 999px;
-}
-
-.project-grid::-webkit-scrollbar-thumb {
-  background: rgba(168, 85, 247, 0.5);
-  border-radius: 999px;
 }
 
 .project-card {
-  flex: 0 0 auto;
-  width: 320px;
-  scroll-snap-align: start;
   background: rgba(255, 255, 255, 0.03);
   border-radius: 20px;
   padding: 32px;
@@ -745,13 +699,14 @@ h1, h2, h3 {
     border-bottom: none !important;
   }
 
-  /* Benefits & Projects stay horizontal scroll on mobile, just narrower cards */
-  .benefit-card {
-    width: 240px;
+  /* Benefits */
+  .benefits-grid {
+    grid-template-columns: 1fr;
   }
 
-  .project-card {
-    width: 260px;
+  /* Projects */
+  .project-grid {
+    grid-template-columns: 1fr;
   }
 
   .projects h2,
