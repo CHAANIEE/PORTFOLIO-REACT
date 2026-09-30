@@ -1,40 +1,42 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { animate } from "animejs";
 
 function AnimatedCounter({ value, suffix = "" }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
   const [count, setCount] = useState(0);
-
   const isNumeric = !isNaN(parseInt(value));
   const target = isNumeric ? parseInt(value) : 0;
 
   useEffect(() => {
-    if (!isInView || !isNumeric) return;
-    let start = 0;
-    const duration = 1200;
-    const stepTime = 16;
-    const steps = duration / stepTime;
-    const increment = target / steps;
+    const el = ref.current;
+    if (!el || !isNumeric) return;
 
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= target) {
-        setCount(target);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(start));
-      }
-    }, stepTime);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          const obj = { val: 0 };
+          animate(obj, {
+            val: target,
+            round: 1,
+            duration: 1200,
+            ease: "outQuad",
+            onUpdate: () => setCount(obj.val),
+          });
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.3 }
+    );
 
-    return () => clearInterval(timer);
-  }, [isInView, target, isNumeric]);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [target, isNumeric]);
 
   return (
-    <motion.span ref={ref} className="counter">
+    <span ref={ref}>
       {isNumeric ? count : value}
       {suffix}
-    </motion.span>
+    </span>
   );
 }
 
