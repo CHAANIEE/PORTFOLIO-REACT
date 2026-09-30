@@ -11,7 +11,8 @@ body {
   color: #f2f2f5;
   line-height: 1.6;
   overflow-x: hidden;
-  padding-bottom: 90px; /* space for fixed bottom nav */
+  padding-bottom: 90px;
+  position: relative;
 }
 
 a {
@@ -24,6 +25,7 @@ section {
   margin: 0 auto;
   padding: 120px 24px;
   position: relative;
+  z-index: 1;
 }
 
 h1, h2, h3 {
@@ -71,7 +73,7 @@ h1, h2, h3 {
   color: #fff;
 }
 
-/* === Mobile hamburger button (hidden by default, shown only on mobile) === */
+/* === Mobile hamburger button === */
 .mobile-menu-btn {
   display: none;
 }
@@ -129,6 +131,31 @@ h1, h2, h3 {
   font-size: 1.2rem;
   color: #a0a0b0;
   margin-top: 20px;
+}
+
+/* === Flip text effect (hero name) === */
+.flip-text {
+  display: inline-block;
+}
+
+.flip-word-outer {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.flip-top {
+  display: inline-block;
+  position: relative;
+}
+
+.flip-bottom {
+  display: inline-block;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  white-space: nowrap;
 }
 
 /* === Stats (bento grid with glow) === */
@@ -308,6 +335,20 @@ h1, h2, h3 {
   font-size: 1.4rem;
   margin: 48px 0 24px;
   color: #888;
+}
+.project-card-wrapper {
+  display: contents;
+}
+.project-thumb {
+  width: 100% !important;
+  height: 160px !important;
+  max-width: 100% !important;
+  max-height: 160px !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  display: block;
 }
 
 .project-grid {
@@ -608,7 +649,6 @@ h1, h2, h3 {
     margin: 0 16px 24px;
   }
 
-  /* Hero */
   .hero {
     padding-top: 120px;
     padding-bottom: 40px;
@@ -627,12 +667,10 @@ h1, h2, h3 {
     height: 280px;
   }
 
-  /* Hide desktop pill nav entirely on mobile */
   .navbar {
     display: none;
   }
 
-  /* Show hamburger button instead */
   .mobile-menu-btn {
     display: flex;
     align-items: center;
@@ -684,7 +722,6 @@ h1, h2, h3 {
     color: #fff;
   }
 
-  /* Stats grid — single column on small screens */
   .stats-grid {
     grid-template-columns: 1fr;
   }
@@ -699,12 +736,10 @@ h1, h2, h3 {
     border-bottom: none !important;
   }
 
-  /* Benefits */
   .benefits-grid {
     grid-template-columns: 1fr;
   }
 
-  /* Projects */
   .project-grid {
     grid-template-columns: 1fr;
   }
@@ -718,12 +753,10 @@ h1, h2, h3 {
     font-size: 1.8rem;
   }
 
-  /* Process */
   .process-step h3 {
     font-size: 1.15rem;
   }
 
-  /* Multistep form */
   .multistep-form label {
     font-size: 1.15rem;
   }
@@ -755,5 +788,15 @@ h1, h2, h3 {
 
   section {
     padding: 40px 18px;
+  }
+
+  .shooting-stars-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
   }
 }
