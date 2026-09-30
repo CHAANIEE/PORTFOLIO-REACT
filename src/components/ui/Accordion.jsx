@@ -1,10 +1,35 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef } from "react";
+import { animate } from "animejs";
 
 function Accordion({ items }) {
   const [openIndex, setOpenIndex] = useState(null);
+  const bodyRefs = useRef([]);
 
-  const toggle = (i) => setOpenIndex(openIndex === i ? null : i);
+  const toggle = (i) => {
+    const isOpening = openIndex !== i;
+    const el = bodyRefs.current[i];
+
+    if (openIndex !== null && openIndex !== i) {
+      const prevEl = bodyRefs.current[openIndex];
+      animate(prevEl, {
+        height: 0,
+        opacity: 0,
+        duration: 250,
+        ease: "outQuad",
+      });
+    }
+
+    if (el) {
+      animate(el, {
+        height: isOpening ? [0, el.scrollHeight] : 0,
+        opacity: isOpening ? [0, 1] : 0,
+        duration: 300,
+        ease: "outQuad",
+      });
+    }
+
+    setOpenIndex(isOpening ? i : null);
+  };
 
   return (
     <div className="accordion">
@@ -16,19 +41,13 @@ function Accordion({ items }) {
               +
             </span>
           </button>
-          <AnimatePresence>
-            {openIndex === i && (
-              <motion.div
-                className="accordion-body"
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <p>{item.answer}</p>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <div
+            ref={(el) => (bodyRefs.current[i] = el)}
+            className="accordion-body"
+            style={{ height: 0, opacity: 0, overflow: "hidden" }}
+          >
+            <p>{item.answer}</p>
+          </div>
         </div>
       ))}
     </div>
