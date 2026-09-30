@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+import { animate } from "animejs";
 
 const initialForm = {
   service: "",
@@ -13,10 +13,20 @@ function ProjectRequestForm() {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState(initialForm);
   const [status, setStatus] = useState("idle");
+  const stepRef = useRef(null);
   const totalSteps = 4;
 
-  const update = (field, value) => setForm({ ...form, [field]: value });
+  useEffect(() => {
+    if (!stepRef.current) return;
+    animate(stepRef.current, {
+      opacity: [0, 1],
+      translateX: [30, 0],
+      duration: 350,
+      ease: "outQuad",
+    });
+  }, [step]);
 
+  const update = (field, value) => setForm({ ...form, [field]: value });
   const next = () => setStep((s) => Math.min(s + 1, totalSteps));
   const back = () => setStep((s) => Math.max(s - 1, 1));
 
@@ -24,7 +34,6 @@ function ProjectRequestForm() {
     e.preventDefault();
     setStatus("sending");
     try {
-      // TODO: wire to Formspree / EmailJS / your backend
       setStatus("success");
     } catch {
       setStatus("error");
@@ -34,14 +43,10 @@ function ProjectRequestForm() {
   if (status === "success") {
     return (
       <section id="contact" className="contact">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="form-success"
-        >
+        <div className="form-success">
           <h2>That was beautiful.</h2>
           <p>I'll be in touch soon.</p>
-        </motion.div>
+        </div>
       </section>
     );
   }
@@ -54,14 +59,9 @@ function ProjectRequestForm() {
       <div className="form-progress">{step} / {totalSteps}</div>
 
       <form onSubmit={handleSubmit} className="multistep-form">
-        <AnimatePresence mode="wait">
+        <div ref={stepRef}>
           {step === 1 && (
-            <motion.div
-              key="step1"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }}
-            >
+            <>
               <label>What do you need?</label>
               <div className="option-group">
                 {["Website Build", "Feature/Bugfix", "Full App", "Other"].map(
@@ -77,16 +77,11 @@ function ProjectRequestForm() {
                   )
                 )}
               </div>
-            </motion.div>
+            </>
           )}
 
           {step === 2 && (
-            <motion.div
-              key="step2"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }}
-            >
+            <>
               <label>Desired timeframe?</label>
               <div className="option-group">
                 {["ASAP", "1-2 weeks", "1 month+", "Flexible"].map((opt) => (
@@ -100,16 +95,11 @@ function ProjectRequestForm() {
                   </button>
                 ))}
               </div>
-            </motion.div>
+            </>
           )}
 
           {step === 3 && (
-            <motion.div
-              key="step3"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }}
-            >
+            <>
               <label>Tell me about the project</label>
               <textarea
                 value={form.message}
@@ -117,16 +107,11 @@ function ProjectRequestForm() {
                 placeholder="Project scope & description"
                 required
               />
-            </motion.div>
+            </>
           )}
 
           {step === 4 && (
-            <motion.div
-              key="step4"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }}
-            >
+            <>
               <label>How can I reach you?</label>
               <input
                 type="text"
@@ -142,9 +127,9 @@ function ProjectRequestForm() {
                 onChange={(e) => update("email", e.target.value)}
                 required
               />
-            </motion.div>
+            </>
           )}
-        </AnimatePresence>
+        </div>
 
         <div className="form-nav">
           {step > 1 && (
